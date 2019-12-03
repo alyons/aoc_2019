@@ -1,0 +1,23 @@
+{
+  "name": "aoc_2019",
+  "version": "1.0.0",
+  "description": "Advent of Code - 2019",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alyons/aoc_2019.git"
+  },
+  "author": "Alexander Lyons",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alyons/aoc_2019/issues"
+  },
+  "homepage": "https://github.com/alyons/aoc_2019#readme",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
