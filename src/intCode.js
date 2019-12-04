@@ -19,7 +19,6 @@ function intCode(array, optCode = 0) {
     }
 
     array.splice(array[optCode + 3], 1, output);
-    // console.log(array);
     return intCode(array, optCode + 4);
 }
 
