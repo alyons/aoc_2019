@@ -1,6 +1,6 @@
 /* Day One - Calculate Fuel */
 const calculateFuel = require('../src/calculateFuel');
-const dayOneInput = require('../inputs/dayOne.json');
+const dayOneInput = require('../inputs/one.json');
 
 let totalFuel = 0;
 dayOneInput.forEach(mass => {
