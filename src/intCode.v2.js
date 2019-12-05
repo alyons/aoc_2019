@@ -1,4 +1,10 @@
+const readline = require('readline');
 const validCommands = [1, 2, 3, 4, 99];
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 // 1 = Add
 function add(array, optCode) {
@@ -20,6 +26,10 @@ function multiply(array, optCode) {
 
 // 3 = Get Input
 function getInput(array, optCode) {
+    rl.question('Provide input: ', (input) => {
+        array.splice(array[optCode + 1], i, input);
+        console.log(`Placing value ${input} at index ${array[optCode + 1]}`);
+    });
     return intCode(array, optCode + 2);
 }
 
