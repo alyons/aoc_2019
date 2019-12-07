@@ -39,7 +39,7 @@ function multiply(array, optCode, input, output, shouldLog) {
 // 3 = Get Input
 function getInput(array, optCode, input, output, shouldLog) {
     let value = input.shift();
-    if (value == undefined) value = 0;
+    if (value == undefined) value = output;
     array.splice(array[optCode + 1], 1, value);
     if (shouldLog) {
         console.log(`Placing value ${value} at index ${array[optCode + 1]}: ${array[array[optCode + 1]]}`);
@@ -96,7 +96,7 @@ function jumpIfFalse(array, optCode, input, output, shouldLog) {
     if (param1 == 0) {
         optCode = param2;
     } else {
-        optCode += 3;
+        optCode += 3
     }
 
     return [array, optCode, input, output, shouldLog];
@@ -143,19 +143,12 @@ function intCode(array, optCode = 0, input = [], output = 0, shouldLog = false) 
 
     let shouldExit = false;
     let currentValues = [array, optCode, input, output, shouldLog];
+    let fullCommand = 0;
 
     do {
-        array = currentValues[0];
-        optCode = currentValues[1];
-        input = currentValues[2];
-        output = currentValues[3];
-        shouldLog = currentValues[4];
+        if (shouldLog) console.log(`Opt Code: ${optCode}`);
 
-        console.log(`Opt Code: ${optCode}`);
-
-        let fullCommand = array[optCode];
-        if (fullCommand == 99) shouldExit = true;
-
+        fullCommand = array[optCode];
         let command = Number.parseInt(('' + fullCommand).slice(-2));
 
         if (validCommands.indexOf(command) < 0) throw new Error(`Invalid command found: ${command}`);
@@ -164,22 +157,64 @@ function intCode(array, optCode = 0, input = [], output = 0, shouldLog = false) 
             case 1: currentValues = add(array, optCode, input, output, shouldLog); break;
             case 2: currentValues = multiply(array, optCode, input, output, shouldLog); break;
             case 3: currentValues = getInput(array, optCode, input, output, shouldLog); break;
-            case 4: currentValues = putOutput(array, optCode, input, output, shouldLog); break;
+            case 4: currentValues = putOutput(array, optCode, input, output, shouldLog); shouldExit = true; break;
             case 5: currentValues = jumpIfTrue(array, optCode, input, output, shouldLog); break;
             case 6: currentValues = jumpIfFalse(array, optCode, input, output, shouldLog); break;
             case 7: currentValues = lessThan(array, optCode, input, output, shouldLog); break;
             case 8: currentValues = equalTo(array, optCode, input, output, shouldLog); break;
+            case 99: shouldExit = true; break;
         }
 
+        array = currentValues[0];
+        optCode = currentValues[1];
+        input = currentValues[2];
+        output = currentValues[3];
+        shouldLog = currentValues[4];
+
+    } while(!shouldExit);
+
+    return (fullCommand == 99) ? output : [output, optCode];
+}
+
+function runThrusters(code, phaseSequence, shouldLog) {
+    let amps = [];
+    let executionState = [];
+    let shouldExit = false;
+    let output = 0;
+
+    for(let i = 0; i < phaseSequence.length; i += 1) {
+        let input = (i == 0) ? [phaseSequence[i], 0] : [phaseSequence[i]];
+        let program = [code.slice(0), 0, input, 0, shouldLog];
+        amps.push(program);
+        executionState.push(0);
+    }
+
+    let currentAmp = 0;
+
+    do {
+        if (shouldLog) console.log(`Running Amp[${currentAmp}]: Opt Code: ${amps[currentAmp][1]} Input: ${amps[currentAmp][2]}`);
+        let value = intCode(amps[currentAmp][0], amps[currentAmp][1], amps[currentAmp][2], amps[currentAmp][3], amps[currentAmp][4]);
+        if (Array.isArray(value)) {
+            if (shouldLog) console.log(`Soft stop for Amp[${currentAmp}]: ${value}`);
+            amps[currentAmp][1] = value[1];
+            if (currentAmp < amps.length - 1) currentAmp += 1; else currentAmp = 0;
+            amps[currentAmp][2].push(value[0]);
+            output = value[0];
+        } else {
+            if (shouldLog) console.log(`Final output for Amp[${currentAmp}]: ${value}`);
+            if (currentAmp < amps.length - 1) {
+                currentAmp += 1;
+                amps[currentAmp][2].push(value);
+            } else {
+                shouldExit = true;
+            }
+        }
     } while(!shouldExit);
 
     return output;
 }
 
-function thrusterSequence(program, phaseSequence) {
-    let output = 0;
-    
-    return output;
-}
-
-module.exports = intCode;
+module.exports = {
+    intCode,
+    runThrusters
+};
