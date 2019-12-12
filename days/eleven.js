@@ -13,11 +13,9 @@ let maxX = Number.MIN_SAFE_INTEGER, maxY = Number.MIN_SAFE_INTEGER;
 
 do {
     if (input.length == 0) { input.push(currentPaintColor); } else { input[0] = currentPaintColor; }
-    // console.log(`Input: ${input.length}`);
     state = intCode(program, input, state.output, state.index, state.rIndex);
     if (state.output.length % 2 == 0 && state.index != 'HALT') {
         let panel = { position: Object.assign({}, currentPosition), paint: state.output[pIndex] };
-        // console.log(panel);
         pIndex++;
         currentRotation += (state.output[pIndex]) ? -1 : 1;
         pIndex++;
@@ -60,12 +58,4 @@ for(let y = minY; y <= maxY; y++) {
 }
 
 console.log(canvas);
-
-// console.log(state);
-// console.log(state.output.length);
-// console.log(pIndex);
 console.log(panels.length);
-// console.log(panels);
-// console.log(`X(${minX},${maxX}) to Y(${minY},${maxY})`);
-
-
