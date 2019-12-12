@@ -1,4 +1,4 @@
-const findBestStation = require('../findBestStation');
+const { findBestStation, vaporizeAsteroids } = require('../asteroids');
 const fs = require('fs');
 const basePath = 'G:/Projects/aoc_2019';
 
@@ -41,5 +41,24 @@ describe('Detect Asteroids', () => {
         const expected = { position: { x: 11, y: 13 }, asteroids: 210 };
 
         expect(actual).toEqual(expected);
+    });
+});
+
+describe('Vaporize Asteroids', () => {
+    test('Asteroid Map 4', () => {
+        const input = fs.readFileSync(`${basePath}/src/__data__/asteroidMap4.txt`).toString();
+        const actual = vaporizeAsteroids(input, 11, 13);
+
+        expect(actual[0]).toEqual({ x: 11, y: 12 });
+        expect(actual[1]).toEqual({x: 11, y: 12 });
+        expect(actual[2]).toEqual({ x: 11, y: 12 });
+        expect(actual[9]).toEqual({ x: 11, y: 12 });
+        expect(actual[19]).toEqual({ x: 11, y: 12 });
+        expect(actual[49]).toEqual({ x: 11, y: 12 });
+        expect(actual[99]).toEqual({ x: 11, y: 12 });
+        expect(actual[198]).toEqual({ x: 11, y: 12 });
+        expect(actual[199]).toEqual({ x: 11, y: 12 });
+        expect(actual[200]).toEqual({ x: 11, y: 12 });
+        expect(actual[298]).toEqual({ x: 11, y: 12 });
     });
 });
