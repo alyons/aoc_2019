@@ -30,7 +30,43 @@ function calculateEnergy(moons) {
     return energy
 }
 
+function calculatePeriod(values) {
+    let velocities = values.map(() => 0);
+    let states = [JSON.stringify(Object.assign({}, values, velocities))];
+
+    let steps = 0;
+    let shouldExit = false;
+
+    do {
+        steps++;
+        for(let i = 0; i < values.length; i++) {
+            for(let j = i + 1; j < values.length; j++) {
+                velocities[i] += (values[i] == values[j]) ? 0 : (values[i] < values[j]) ? 1 : -1;
+                velocities[j] += (values[j] == values[i]) ? 0 : (values[j] < values[i]) ? 1 : -1;
+            }
+            values[i] += velocities[i];
+        }
+
+        let output = JSON.stringify(Object.assign({}, values, velocities));
+        // let index = states.findIndex(s => s == output);
+
+        // if (index > -1) {
+        //     console.log(`Index: ${index}\nSteps: ${steps}`);
+        //     shouldExit = true;
+        //     // steps -= index;
+        // }
+        shouldExit = states[0] == output;
+
+        states.push(output);
+    } while(!shouldExit);
+
+    // console.log(states);
+
+    return steps;
+}
+
 module.exports = {
     calculateEnergy,
+    calculatePeriod,
     updateMoons
 };
