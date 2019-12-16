@@ -41,7 +41,6 @@ function createChemical(chemical, desiredAmount, processes, chemicalStore) {
 
 function removeChemical(chemical, amount, processes, chemicalStore) {
     if (Object.keys(chemicalStore).indexOf(chemical) == -1) chemicalStore[chemical] = 0;
-    if (chemicalStore[chemical] < amount) throw new Error('Cannot reverse chemicals that don\'t exist');
     let process = processes.find(p => { return Object.keys(p.slice(-1)[0])[0] == chemical });
     let runs = Math.floor(amount / parseFloat(process.slice(-1)[0][chemical]));
 
@@ -52,13 +51,16 @@ function removeChemical(chemical, amount, processes, chemicalStore) {
         for(let c = 0; c < process.length - 1; c++) {
             let name = Object.keys(process[c])[0];
             let removeAmount = process[c][name] * runs;
-            if (chemicalStore)
+            if (Object.keys(chemicalStore).indexOf(name) == -1) chemicalStore[name] = 0;
+            chemicalStore[name] += removeAmount;
+            removeChemical(name, removeAmount, processes, chemicalStore);
         }
-        chemicalStore
+        chemicalStore[chemical] -= runs * process.slice(-1)[0][chemical];
     }
 }
 
 module.exports = {
     createChemical,
-    parseProcesses
+    parseProcesses,
+    removeChemical
 };
