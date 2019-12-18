@@ -1,0 +1,3 @@
+function calculateFFT(signal, pattern) {
+
+}
