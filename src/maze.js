@@ -7,6 +7,10 @@ const isPlayer = (c) => c == 64;
 const isWall = (c) => c == 35;
 const toMapKey = (p) => `${p[0]},${p[1]}`;
 
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 function parseMaze(data) {
     let tiles = [];
 
@@ -73,7 +77,7 @@ function aStar(tiles, start, end) {
             let curr = curTile;
             let output = [];
             while (curr.parent) {
-                output.push(curr);
+                output.push(deepClone(curr));
                 curr = curr.parent;
             }
             return output.reverse();
@@ -141,6 +145,7 @@ function findMissingKeys(keys, doors) {
     doors.forEach(d => {
         if (!keys.find(k => k == d.toLowerCase())) missingKeys.push(d.toLowerCase());
     });
+    console.log(`Missing Keys: ${missingKeys}`);
     return missingKeys;
 }
 
@@ -163,6 +168,7 @@ function navigateMaze(tiles) {
     let noLockedDoors = false;
 
     do {
+        console.log(`Path Length: ${currentPath.length}`);
         let pDoors = findAllDoors(currentPath);
         let pKeys = findAllKeys(currentPath);
         let pMissingKeys = findMissingKeys(pKeys, pDoors);
