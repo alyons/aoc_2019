@@ -1,8 +1,8 @@
 const fs = require('fs');
 const { createChemical, parseProcesses, removeChemical } = require('../chemicalPlant');
 
-// const BASE_PATH = 'G:/Projects/aoc_2019';
-const BASE_PATH = '/Users/ag22845/workspace/aoc_2019';
+const BASE_PATH = 'G:/Projects/aoc_2019';
+// const BASE_PATH = '/Users/ag22845/workspace/aoc_2019';
 const input0 = fs.readFileSync(`${BASE_PATH}/src/__data__/fuelProcess0.txt`).toString();
 const input1 = fs.readFileSync(`${BASE_PATH}/src/__data__/fuelProcess1.txt`).toString();
 const input2 = fs.readFileSync(`${BASE_PATH}/src/__data__/fuelProcess2.txt`).toString();
@@ -46,7 +46,7 @@ describe('Create Chemical', () => {
             let chemicalStore = { ORE: 0 };
             createChemical('FUEL', 1, processes, chemicalStore);
             expect(chemicalStore).toEqual(expected);
-        })
+        });
     });
 
     describe('Input 1', () => {
