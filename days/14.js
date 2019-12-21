@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { createChemical, parseProcesses, removeChemical } = require('../src/fuel');
+const { createChemical, parseProcesses, removeChemical } = require('../src/chemicalPlant');
 const { printSameLine } = require('../src/utils');
 
 // const BASE_PATH = 'G:/Projects/aoc_2019';
