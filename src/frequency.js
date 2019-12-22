@@ -14,7 +14,8 @@ function getPattern(pattern, index, length) {
 
 function getPatternValue(pattern, sIndex, pIndex) {
     let toGet = -1;
-    let offset = pattern.length * (sIndex + 1) - 1;
+    let fullSequenceLength = pattern.length * (sIndex + 1);
+    let offset = fullSequenceLength - 1;
 
     if (pIndex < offset) {
         let i = 0;
@@ -29,7 +30,8 @@ function getPatternValue(pattern, sIndex, pIndex) {
         toGet = i;
     } else {
         pIndex -= offset;
-        toGet = pIndex % pattern.length;
+        pIndex %= fullSequenceLength;
+        toGet = Math.floor(pIndex / (sIndex + 1));
     }
 
     return pattern[toGet];
@@ -56,16 +58,26 @@ function calculateFFT(signal, pattern, phases) {
     }
 }
 
-function calculateFFTEx(signal, pattern, phases) {
+function calculateFFTWithRepeat(signal, pattern, phases) {
     for (let p = 0; p < phases; p++) {
         let results = [];
 
-        for()
+        for(let i = 0; i < signal.length; i++) {
+            let sum = 0;
+            for(let j = 0; j < signal.length; j++) {
+                sum += signal[j] * getPatternValue(pattern, i, j);
+            }
+            results.push(Math.abs(sum % 10));
+        }
+
+        for (let i = 0; i < signal.length; i++) signal[i] = results[i];
+        console.log(`Completed Phase ${p}`);
     }
 }
 
 module.exports = {
     calculateFFT,
+    calculateFFTWithRepeat,
     getPattern,
     getPatternValue,
     parseInput

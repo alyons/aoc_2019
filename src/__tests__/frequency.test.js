@@ -1,4 +1,5 @@
-const { calculateFFT, getPatternValue, parseInput } = require('../frequency');
+const { calculateFFT, calculateFFTWithRepeat, getPatternValue, parseInput } = require('../frequency');
+const pattern = [0, 1, 0, -1];
 
 describe('Parse Input', () => {
     test('12345678', () => {
@@ -10,9 +11,7 @@ describe('Parse Input', () => {
     });
 });
 
-describe('Get Pattern Value [a, b, c, d]', () => {
-    let pattern = [0, 1, 0, -1];
-
+describe('Get Pattern Value [0, 1, 0, -1]', () => {
     test('Signal Index: 7 Pattern Index: 6', () => {
         let actual = getPatternValue(pattern, 7, 6);
         expect(actual).toBe(0);
@@ -46,7 +45,6 @@ describe('Get Pattern Value [a, b, c, d]', () => {
 
 describe('Calculate FTT', () => {
     describe('Signal: 12345678 Pattern: [0, 1, 0, -1]', () => {
-        let pattern = [0, 1, 0, -1];
         let baseSignal = [1,2,3,4,5,6,7,8];
 
         test('1 Phase', () => {
@@ -64,14 +62,11 @@ describe('Calculate FTT', () => {
         });
     });
 
-    describe('100 Phases', () => {
-        let pattern = [0, 1, 0, -1];
-        
+    describe('100 Phases', () => {        
         test('80871224585914546619083218645595', () => {
             let signal = parseInput('80871224585914546619083218645595');
             calculateFFT(signal, pattern, 100);
             let actual = signal.slice(0, 8);
-            console.log(actual);
             let expected = [2, 4, 1, 7, 6, 1, 7, 6];
             expect(actual).toEqual(expected);
         });
@@ -94,4 +89,48 @@ describe('Calculate FTT', () => {
     });
 });
 
+describe('Calculate FFT Ex', () => {
+    describe('Signal: 12345678 Pattern: [0, 1, 0, -1]', () => {
+        let baseSignal = [1,2,3,4,5,6,7,8];
 
+        test('1 Phase', () => {
+            let signal = baseSignal.slice();
+            calculateFFTWithRepeat(signal, pattern, 1);
+            let expected = [4, 8, 2, 2, 6, 1, 5, 8];
+            expect(signal).toEqual(expected);
+        });
+    
+        test('4 Phases', () => {
+            let signal = baseSignal.slice();
+            calculateFFTWithRepeat(signal, pattern, 4);
+            let expected = [0, 1, 0, 2, 9, 4, 9, 8];
+            expect(signal).toEqual(expected);
+        });
+    });
+
+    describe('100 Phases', () => {        
+        test('80871224585914546619083218645595', () => {
+            let signal = parseInput('80871224585914546619083218645595');
+            calculateFFTWithRepeat(signal, pattern, 100);
+            let actual = signal.slice(0, 8);
+            let expected = [2, 4, 1, 7, 6, 1, 7, 6];
+            expect(actual).toEqual(expected);
+        });
+
+        test('19617804207202209144916044189917', () => {
+            let signal = parseInput('19617804207202209144916044189917');
+            calculateFFTWithRepeat(signal, pattern, 100);
+            let actual = signal.slice(0, 8);
+            let expected = [7, 3, 7, 4, 5, 4, 1, 8];
+            expect(actual).toEqual(expected);
+        });
+
+        test('69317163492948606335995924319873', () => {
+            let signal = parseInput('69317163492948606335995924319873');
+            calculateFFTWithRepeat(signal, pattern, 100);
+            let actual = signal.slice(0, 8);
+            let expected = [5, 2, 4, 3, 2, 1, 3, 3];
+            expect(actual).toEqual(expected);
+        });
+    });
+});
