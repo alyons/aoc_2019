@@ -24,6 +24,8 @@
     "jest": "^24.9.0"
   },
   "dependencies": {
-    "eslint-plugin-jest": "^23.1.1"
+    "body-parser": "^1.19.0",
+    "eslint-plugin-jest": "^23.1.1",
+    "express": "^4.17.1"
   }
 }
