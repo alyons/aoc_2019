@@ -1,1 +1,1 @@
-require('./days/21');
+require('./days/24');
