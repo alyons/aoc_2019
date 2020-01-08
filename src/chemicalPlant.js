@@ -1,3 +1,5 @@
+const ORE = 'ORE';
+
 function parseProcesses(input, splitString = '\n') {
     let regEx = /([0-9]+\s[A-Z]+)/g;
     let processes = [];
@@ -22,12 +24,12 @@ function createChemical(chemical, desiredAmount, processes, chemicalStore) {
     let process = processes.find(p => { return Object.keys(p.slice(-1)[0])[0] == chemical });
     let toCreateAmount = desiredAmount - chemicalStore[chemical];
 
-    if (Object.keys(process[0])[0] == 'ORE') {
+    if (Object.keys(process[0])[0] == ORE) {
         let runs = Math.ceil(toCreateAmount / parseFloat(process[1][chemical]));
         chemicalStore[chemical] += runs * process[1][chemical];
-        chemicalStore['ORE'] += runs * process[0]['ORE'];
+        chemicalStore[ORE] += runs * process[0][ORE];
     } else {
-        let runs = Math.ceil(desiredAmount / parseFloat(process.slice(-1)[0][chemical]));
+        let runs = Math.ceil(toCreateAmount / parseFloat(process.slice(-1)[0][chemical]));
         for(let c = 0; c < process.length - 1; c++) {
             let name = Object.keys(process[c])[0]; // Name of the chemical
             let neededAmount = process[c][name] * runs;
@@ -44,9 +46,9 @@ function removeChemical(chemical, amount, processes, chemicalStore) {
     let process = processes.find(p => { return Object.keys(p.slice(-1)[0])[0] == chemical });
     let runs = Math.floor(amount / parseFloat(process.slice(-1)[0][chemical]));
 
-    if (Object.keys(process[0])[0] == 'ORE') {
+    if (Object.keys(process[0])[0] == ORE) {
         chemicalStore[chemical] -= runs * process[1][chemical];
-        chemicalStore['ORE'] -= runs * process[0]['ORE'];
+        chemicalStore[ORE] -= runs * process[0][ORE];
     } else {
         for(let c = 0; c < process.length - 1; c++) {
             let name = Object.keys(process[c])[0];
