@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { runProgram, reverseIndex } = require('../src/deck');
 const { printSameLine } = require('../src/utils');
-const program = fs.readFileSync('C:/Users/pyrot/Projects/aoc_2019/inputs/22.txt').toString();
+const program = fs.readFileSync('G:/Projects/aoc_2019/inputs/22.txt').toString();
 
 let deck = [];
 for (let i = 0; i < 10007; i++) { deck.push(i); }
@@ -12,12 +12,19 @@ let loopValue = 0;
 let endIndex = 2020;
 let index = 2020;
 let iterations = 101741582076661;
+let deckSize = 119315717514047;
 
-do {
-    index = reverseIndex(program, 119315717514047, index);
-    loopValue++;
-    printSameLine(`Finished Iteration: ${loopValue}`);
-} while(endIndex != index && loopValue < iterations);
-process.stdout.write('\n');
+let start = new Date();
+console.log(`Start: ${start}`);
+let output = reverseIndex(program, deckSize, index);
+let end = new Date();
+console.log(`End:   ${end}`);
 
-console.log(`Iterations to loop: ${loopValue}`);
+// do {
+//     index = reverseIndex(program, 119315717514047, index);
+//     loopValue++;
+//     printSameLine(`Finished Iteration: ${loopValue}`);
+// } while(endIndex != index && loopValue < iterations);
+// process.stdout.write('\n');
+
+// console.log(`Iterations to loop: ${loopValue}`);

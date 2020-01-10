@@ -82,8 +82,16 @@ function reverseIncrement(length, index, increment) {
         i += increment;
         if (i >= length) i -= length;
     } while (i != index);
+    if (d >= length) d -= length;
     return d;
 }
+
+// function reverseIncrement(length, index, increment) {
+//     let a = parseInt(index / increment);
+//     let b = index % increment;
+//     let c = (increment - b) * increment + (a + 1);
+//     return (b == 0) ? a : c;
+// }
 
 function reverseCut(length, index, cut) {
     index += cut;
@@ -116,6 +124,7 @@ module.exports = {
     cut, 
     deal,
     dealIncrement,
+    reverseIncrement,
     reverseIndex,
     runProgram
 };

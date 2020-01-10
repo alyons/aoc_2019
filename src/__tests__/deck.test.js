@@ -1,8 +1,10 @@
-const { cut, deal, dealIncrement, reverseIndex, runProgram } = require('../deck');
+const { cut, deal, dealIncrement, reverseIncrement, reverseIndex, runProgram } = require('../deck');
 const fs = require('fs');
+const BASE_PATH = 'G:/Projects/aoc_2019'; // 'C:/Users/pyrot/Projects/aoc_2019';
 
-const program0 = fs.readFileSync('C:/Users/pyrot/Projects/aoc_2019/src/__data__/deck0.txt').toString();
-const program1 = fs.readFileSync('C:/Users/pyrot/Projects/aoc_2019/src/__data__/deck1.txt').toString();
+const program0 = fs.readFileSync(`${BASE_PATH}/src/__data__/deck0.txt`).toString();
+const program1 = fs.readFileSync(`${BASE_PATH}/src/__data__/deck1.txt`).toString();
+const program2 = fs.readFileSync(`${BASE_PATH}/inputs/22.txt`).toString();
 
 test('Deal', () => {
     let input = [0,1,2,3,4,5,6,7,8,9];
@@ -34,6 +36,28 @@ test('Deal with Increment', () => {
     expect(actual).toEqual(expected);
 });
 
+describe('Reverse Increment 3 (10 Cards)', () => {
+    test('Value at index 0 is 0', () => {
+        let actual = reverseIncrement(10, 0, 3);
+        expect(actual).toBe(0);
+    });
+
+    test('Value at index 2 is 4', () => {
+        let actual = reverseIncrement(10, 2, 3);
+        expect(actual).toBe(4);
+    });
+
+    test('Value at index 4 is 8', () => {
+        let actual = reverseIncrement(10, 4, 3);
+        expect(actual).toBe(8);
+    });
+
+    test('Value at index 9 is 3', () => {
+        let actual = reverseIncrement(10, 9, 3);
+        expect(actual).toBe(3);
+    });
+});
+
 describe('Multiple Steps (Run Program)', () => {
     let deck;
 
@@ -63,7 +87,7 @@ describe('Multiple Steps (Run Program)', () => {
         expect(actual).toEqual(expected);
     });
 
-    test('increment 7, increment 9, cut -2', () => {
+    test('whole program...', () => {
         let step0 = deal(deck);
         let step1 = cut(step0, -2);
         let step2 = dealIncrement(step1, 7);
@@ -88,5 +112,10 @@ describe('Direct Calculation', () => {
     test('Value at index 7 is 2 for Program 1', () => {
         let actual = reverseIndex(program1, 10, 7);
         expect(actual).toBe(2);
+    });
+
+    test('Value at index 6326 is 2019 for Program 2', () => {
+        let actual = reverseIndex(program2, 10007, 6326);
+        expect(actual).toBe(2019);
     });
 });
