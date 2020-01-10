@@ -1,7 +1,8 @@
 const fs = require('fs');
 const { runProgram, reverseIndex } = require('../src/deck');
 const { printSameLine } = require('../src/utils');
-const program = fs.readFileSync('G:/Projects/aoc_2019/inputs/22.txt').toString();
+const BASE_PATH = 'G:/Projects/aoc_2019'; //
+const program = fs.readFileSync(`${BASE_PATH}/inputs/22.txt`).toString();
 
 let deck = [];
 for (let i = 0; i < 10007; i++) { deck.push(i); }
