@@ -21,31 +21,39 @@ createChemical('FUEL', 1, processes, store);
 // console.log(chemicalStore);
 console.log(`Ore Required: ${store.get('ORE')}`);
 
-let incValue = 100000;
-let shouldExit = false;
+let incValue = 1;
 
 do {
-    while(store['ORE'] < maxOre && !shouldExit) {
-        createChemical('FUEL', store.get('FUEL') + incValue, processes, store);
-        printSameLine(`Current Ore: ${store['ORE']}`);
+    store = new Map([['ORE', 0]]);
+    incValue *= 10;
+    createChemical('FUEL', incValue, processes, store);
+} while(store.get('ORE') < maxOre);
+
+incValue /= 10;
+let maxLength = ('' + incValue).length;
+console.log(`Max Length: ${maxLength}`);
+let stringIndex = 0;
+do {
+    store = new Map([['ORE', 0]]);
+    createChemical('FUEL', incValue, processes, store);
+    if (store.get('ORE') < maxOre) {
+        let testString = '' + incValue;
+        let digit = parseInt(testString.charAt(stringIndex)) + 1;
+        incValue = parseInt(testString.substring(0, stringIndex) + digit + testString.substring(stringIndex + 1));
+    } else {
+        let testString = '' + incValue;
+        let digit = parseInt(testString.charAt(stringIndex)) - 1;
+        incValue = parseInt(testString.substring(0, stringIndex) + digit + testString.substring(stringIndex + 1));
+        stringIndex++;
     }
+} while (stringIndex < maxLength);
 
-    incValue /= 2;
-    shouldExit = incValue < 2;
+console.log(`Found Value: ${formatNumber(incValue)}`);
 
-    while(store['ORE'] > maxOre && !shouldExit) {
-        removeChemical('FUEL', incValue, processes, store);
-        printSameLine(`Current Ore: ${store['ORE']}`);
-    }
 
-    incValue /= 2;
-    shouldExit = incValue < 2;
-} while (!shouldExit);
 
-// 6323777400 is too high...
-// My program returns that 6323777403 uses exactly 1 trillion ore
 
-createChemical('FUEL', 3756877, processes, store);
+// createChemical('FUEL', 3756877, processes, store);
 
 console.log(`Fuel Generated: ${formatNumber(store.get('FUEL'))}`);
 console.log(`Ore Consumed: ${formatNumber(store.get('ORE'))}`);
