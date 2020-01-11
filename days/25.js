@@ -30,5 +30,9 @@ function generateInput(command, args = '') {
     return cmdString.split('').map(c => c.charCodeAt(0));
 }
 
-state = intCode(program, input, state.output, state.index, state.rIndex);
-console.log(state);
+while (state.index != 'HALT') {
+    state = intCode(program, input, state.output, state.index, state.rIndex);
+    console.log(String.fromCharCode.apply(null, state.output));
+}
+// console.log(state);
+// console.log(program[state.index]);

@@ -9,6 +9,7 @@ function readMemory(memory, index, rIndex, mode) {
     }
 
     while (memory.length < trueIndex + 1) memory.push(0);
+    // console.log(`${trueIndex} <= ${memory.length}`);
 
     return Number(memory[trueIndex]);
 }
@@ -91,6 +92,8 @@ function equalTo(memory, command, index, rIndex) {
 function updateRelativeBase(memory, command, index, rIndex) {
     let a = readMemory(memory, index + 1, rIndex, command[1]);
 
+    // console.log(`${a} = readMemory(program, ${index + 1}, ${rIndex}, ${command[1]});`)
+
     return rIndex + a;
 }
 
@@ -110,6 +113,7 @@ function intCode(memory, input = [], output = [], index = 0, rIndex = 0) {
 
     do {
         let command = getCommand(memory[index]);
+        // console.log(command);
 
         switch(command[0]) {
             case 1: index = add(memory, command, index, rIndex); break;
